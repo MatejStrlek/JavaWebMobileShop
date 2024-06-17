@@ -40,4 +40,24 @@ public class MobileController {
         publisher.publishCustomEvent("MobileController :: Search mobiles done!");
         return "mobiles/list";
     }
+
+    @GetMapping("/edit/{id}")
+    public String editMobileForm(@PathVariable Long id, Model model) {
+        Mobile mobile = mobileService.getMobileById(id).orElseThrow(() -> new IllegalArgumentException("Invalid mobile Id:" + id));
+        model.addAttribute("mobile", mobile);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "mobiles/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String updateMobile(@PathVariable Long id, @ModelAttribute Mobile mobile, Model model) {
+        mobileService.updateMobile(id, mobile);
+        return "redirect:/mvc/mobilewebshop/mobiles/list";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteMobile(@PathVariable Long id) {
+        mobileService.deleteMobile(id);
+        return "redirect:/mvc/mobilewebshop/mobiles/list";
+    }
 }

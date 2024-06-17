@@ -25,6 +25,11 @@ public class MobileService {
         return mobileRepository.save(mobile);
     }
 
+    public void updateMobile(Long id, Mobile mobile) {
+        mobile.setId(id);
+        mobileRepository.save(mobile);
+    }
+
     public void deleteMobile(Long id) {
         mobileRepository.deleteById(id);
     }

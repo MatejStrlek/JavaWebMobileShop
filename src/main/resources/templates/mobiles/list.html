@@ -44,7 +44,8 @@
             <td th:text="${mobile.category.name}">Category</td>
             <td>
                 <a th:href="@{/mvc/mobilewebshop/mobiles/edit/{id}(id=${mobile.id})}" class="btn btn-warning">Edit</a>
-                <form th:action="@{/mvc/mobilewebshop/mobiles/delete/{id}(id=${mobile.id})}" method="post" style="display:inline;">
+                <form th:action="@{/mvc/mobilewebshop/mobiles/delete/{id}(id=${mobile.id})}" method="post"
+                      style="display:inline;" onsubmit="return confirmDelete();">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             </td>
@@ -56,5 +57,10 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this mobile?");
+    }
+</script>
 </body>
 </html>
