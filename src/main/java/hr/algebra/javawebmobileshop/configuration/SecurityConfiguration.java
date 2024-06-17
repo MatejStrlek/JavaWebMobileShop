@@ -24,17 +24,18 @@ public class SecurityConfiguration {
                         .requestMatchers("/login").anonymous()
                         .requestMatchers(
                                 "/h2-console/**",
-                                "/rest/mobilewebshop/**"
-                        ).permitAll()/*.hasRole("ADMIN")*/
+                                "/rest/mobilewebshop/**",
+                                "/mvc/mobilewebshop/**"
+                        ).hasRole("ADMIN")
                         .requestMatchers(
                                 "/rest/mobilewebshop/purchase",
                                 "/mvc/mobilewebshop/getPurchase.html",
                                 "/mvc/mobilewebshop/getHistory.html"
                         )
                         .hasAnyRole("USER", "ADMIN")
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form.defaultSuccessUrl("/mvc/mobilewebshop/mobiles/list"))
                 .logout(LogoutConfigurer::permitAll);
         return http.build();
     }

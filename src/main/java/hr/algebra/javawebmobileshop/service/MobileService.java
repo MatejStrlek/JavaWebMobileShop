@@ -28,4 +28,14 @@ public class MobileService {
     public void deleteMobile(Long id) {
         mobileRepository.deleteById(id);
     }
+
+    public List<Mobile> searchMobiles(String query) {
+        List<Mobile> mobiles = mobileRepository.findAll();
+        return mobiles.stream()
+                .filter(mobile -> mobile.getName().toLowerCase().contains(query.toLowerCase()) ||
+                        mobile.getBrand().toLowerCase().contains(query.toLowerCase()) ||
+                        mobile.getCategory().getName().toLowerCase().contains(query.toLowerCase()) ||
+                        String.valueOf(mobile.getPrice()).contains(query))
+                .toList();
+    }
 }

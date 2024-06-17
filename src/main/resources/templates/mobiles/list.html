@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mobile List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logout-button">
+        <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+    </div>
+    <h1 class="mt-4">Mobile List</h1>
+    <form th:action="@{/mvc/mobilewebshop/mobiles/search}" method="post">
+        <div class="form-group">
+            <label>
+                <input type="text" name="query" class="form-control" placeholder="Search mobiles">
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <table class="table table-striped mt-4">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="mobile : ${mobiles}">
+            <td th:text="${mobile.name}">Name</td>
+            <td th:text="${mobile.brand}">Brand</td>
+            <td th:text="${mobile.price}">Price</td>
+            <td th:text="${mobile.category.name}">Category</td>
+            <td>
+                <a th:href="@{/mvc/mobilewebshop/mobiles/edit/{id}(id=${mobile.id})}" class="btn btn-warning">Edit</a>
+                <form th:action="@{/mvc/mobilewebshop/mobiles/delete/{id}(id=${mobile.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/mvc/mobilewebshop/mobiles/add}" class="btn btn-success">Add Mobile</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
