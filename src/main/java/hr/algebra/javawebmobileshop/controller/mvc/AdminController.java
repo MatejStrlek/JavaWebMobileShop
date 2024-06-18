@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/mvc/mobilewebshop/mobiles")
-public class MobileController {
+@RequestMapping("/admin/mobilewebshop")
+public class AdminController {
     private final CustomSpringEventPublisher publisher;
     private final MobileService mobileService;
     private final MobileCategoryService categoryService;
 
     @Autowired
-    public MobileController(CustomSpringEventPublisher publisher, MobileService mobileService, MobileCategoryService categoryService) {
+    public AdminController(CustomSpringEventPublisher publisher, MobileService mobileService, MobileCategoryService categoryService) {
         this.publisher = publisher;
         this.mobileService = mobileService;
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/mobiles/list")
     public String listMobiles(Model model) {
         List<Mobile> mobiles = mobileService.getAllMobiles();
         model.addAttribute("mobiles", mobiles);
@@ -33,7 +33,7 @@ public class MobileController {
         return "mobiles/list";
     }
 
-    @PostMapping("/search")
+    @PostMapping("mobiles/search")
     public String searchMobiles(@RequestParam("query") String query, Model model) {
         List<Mobile> mobiles = mobileService.searchMobiles(query);
         model.addAttribute("mobiles", mobiles);
@@ -41,7 +41,7 @@ public class MobileController {
         return "mobiles/list";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("mobiles/edit/{id}")
     public String editMobileForm(@PathVariable Long id, Model model) {
         Mobile mobile = mobileService.getMobileById(id).orElseThrow(() -> new IllegalArgumentException("Invalid mobile Id:" + id));
         model.addAttribute("mobile", mobile);
@@ -49,15 +49,15 @@ public class MobileController {
         return "mobiles/edit";
     }
 
-    @PostMapping("/edit/{id}")
+    @PostMapping("mobiles/edit/{id}")
     public String updateMobile(@PathVariable Long id, @ModelAttribute Mobile mobile, Model model) {
         mobileService.updateMobile(id, mobile);
-        return "redirect:/mvc/mobilewebshop/mobiles/list";
+        return "redirect:/admin/mobilewebshop/mobiles/list";
     }
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("mobiles/delete/{id}")
     public String deleteMobile(@PathVariable Long id) {
         mobileService.deleteMobile(id);
-        return "redirect:/mvc/mobilewebshop/mobiles/list";
+        return "redirect:/admin/mobilewebshop/mobiles/list";
     }
 }

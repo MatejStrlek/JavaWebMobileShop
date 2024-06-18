@@ -25,7 +25,7 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 "/h2-console/**",
                                 "/rest/mobilewebshop/**",
-                                "/mvc/mobilewebshop/**"
+                                "/admin/mobilewebshop/**"
                         ).hasRole("ADMIN")
                         .requestMatchers(
                                 "/rest/mobilewebshop/purchase",
@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                         .hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form.defaultSuccessUrl("/mvc/mobilewebshop/mobiles/list"))
+                .formLogin(form -> form.defaultSuccessUrl("/admin/mobilewebshop/mobiles/list"))
                 .logout(LogoutConfigurer::permitAll);
         return http.build();
     }

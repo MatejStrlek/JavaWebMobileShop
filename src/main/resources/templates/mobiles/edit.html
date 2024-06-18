@@ -8,7 +8,7 @@
 <body>
 <div class="container">
     <h1 class="mt-4">Edit Mobile</h1>
-    <form th:action="@{/mvc/mobilewebshop/mobiles/edit/{id}(id=${mobile.id})}" th:object="${mobile}" method="post">
+    <form th:action="@{/admin/mobilewebshop/mobiles/edit/{id}(id=${mobile.id})}" th:object="${mobile}" method="post">
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" th:field="*{name}" class="form-control" required>
@@ -28,7 +28,7 @@
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
-        <a th:href="@{/mvc/mobilewebshop/mobiles}" class="btn btn-secondary">Cancel</a>
+        <a th:href="@{/admin/mobilewebshop/mobiles}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

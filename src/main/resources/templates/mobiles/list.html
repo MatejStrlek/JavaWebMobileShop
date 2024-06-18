@@ -18,7 +18,7 @@
         <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
     </div>
     <h1 class="mt-4">Mobile List</h1>
-    <form th:action="@{/mvc/mobilewebshop/mobiles/search}" method="post">
+    <form th:action="@{/admin/mobilewebshop/mobiles/search}" method="post">
         <div class="form-group">
             <label>
                 <input type="text" name="query" class="form-control" placeholder="Search mobiles">
@@ -43,8 +43,8 @@
             <td th:text="${mobile.price}">Price</td>
             <td th:text="${mobile.category.name}">Category</td>
             <td>
-                <a th:href="@{/mvc/mobilewebshop/mobiles/edit/{id}(id=${mobile.id})}" class="btn btn-warning">Edit</a>
-                <form th:action="@{/mvc/mobilewebshop/mobiles/delete/{id}(id=${mobile.id})}" method="post"
+                <a th:href="@{/admin/mobilewebshop/mobiles/edit/{id}(id=${mobile.id})}" class="btn btn-warning">Edit</a>
+                <form th:action="@{/admin/mobilewebshop/mobiles/delete/{id}(id=${mobile.id})}" method="post"
                       style="display:inline;" onsubmit="return confirmDelete();">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
@@ -52,7 +52,7 @@
         </tr>
         </tbody>
     </table>
-    <a th:href="@{/mvc/mobilewebshop/mobiles/add}" class="btn btn-success">Add Mobile</a>
+    <a th:href="@{/admin/mobilewebshop/mobiles/add}" class="btn btn-success">Add Mobile</a>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
