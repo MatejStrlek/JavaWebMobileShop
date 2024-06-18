@@ -33,7 +33,7 @@ public class AdminController {
         return "mobiles/list";
     }
 
-    @PostMapping("mobiles/search")
+    @PostMapping("/mobiles/search")
     public String searchMobiles(@RequestParam("query") String query, Model model) {
         List<Mobile> mobiles = mobileService.searchMobiles(query);
         model.addAttribute("mobiles", mobiles);
@@ -41,7 +41,7 @@ public class AdminController {
         return "mobiles/list";
     }
 
-    @GetMapping("mobiles/edit/{id}")
+    @GetMapping("/mobiles/edit/{id}")
     public String editMobileForm(@PathVariable Long id, Model model) {
         Mobile mobile = mobileService.getMobileById(id).orElseThrow(() -> new IllegalArgumentException("Invalid mobile Id:" + id));
         model.addAttribute("mobile", mobile);
@@ -49,15 +49,31 @@ public class AdminController {
         return "mobiles/edit";
     }
 
-    @PostMapping("mobiles/edit/{id}")
+    @PostMapping("/mobiles/edit/{id}")
     public String updateMobile(@PathVariable Long id, @ModelAttribute Mobile mobile, Model model) {
         mobileService.updateMobile(id, mobile);
+        publisher.publishCustomEvent("MobileController :: Update mobile done!");
         return "redirect:/admin/mobilewebshop/mobiles/list";
     }
 
-    @PostMapping("mobiles/delete/{id}")
+    @PostMapping("/mobiles/delete/{id}")
     public String deleteMobile(@PathVariable Long id) {
         mobileService.deleteMobile(id);
+        publisher.publishCustomEvent("MobileController :: Delete mobile done!");
+        return "redirect:/admin/mobilewebshop/mobiles/list";
+    }
+
+    @GetMapping("/mobiles/add")
+    public String addMobileForm(Model model) {
+        model.addAttribute("mobile", new Mobile());
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "mobiles/add";
+    }
+
+    @PostMapping("/mobiles/add")
+    public String saveMobile(@ModelAttribute Mobile mobile) {
+        mobileService.saveMobile(mobile);
+        publisher.publishCustomEvent("MobileController :: Add mobile done!");
         return "redirect:/admin/mobilewebshop/mobiles/list";
     }
 }
