@@ -25,7 +25,19 @@ public class MobileCategoryService {
         return mobileCategoryRepository.save(mobileCategory);
     }
 
+    public void updateCategory(Long id, MobileCategory mobileCategory) {
+        mobileCategory.setId(id);
+        mobileCategoryRepository.save(mobileCategory);
+    }
+
     public void deleteCategory(Long id) {
         mobileCategoryRepository.deleteById(id);
+    }
+
+    public List<MobileCategory> searchCategories(String query) {
+        List<MobileCategory> categories = mobileCategoryRepository.findAll();
+        return categories.stream()
+                .filter(category -> category.getName().toLowerCase().contains(query.toLowerCase()))
+                .toList();
     }
 }

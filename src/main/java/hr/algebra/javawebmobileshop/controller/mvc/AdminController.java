@@ -1,6 +1,7 @@
 package hr.algebra.javawebmobileshop.controller.mvc;
 
 import hr.algebra.javawebmobileshop.model.Mobile;
+import hr.algebra.javawebmobileshop.model.MobileCategory;
 import hr.algebra.javawebmobileshop.publisher.CustomSpringEventPublisher;
 import hr.algebra.javawebmobileshop.service.MobileCategoryService;
 import hr.algebra.javawebmobileshop.service.MobileService;
@@ -50,7 +51,7 @@ public class AdminController {
     }
 
     @PostMapping("/mobiles/edit/{id}")
-    public String updateMobile(@PathVariable Long id, @ModelAttribute Mobile mobile, Model model) {
+    public String updateMobile(@PathVariable Long id, @ModelAttribute Mobile mobile) {
         mobileService.updateMobile(id, mobile);
         publisher.publishCustomEvent("MobileController :: Update mobile done!");
         return "redirect:/admin/mobilewebshop/mobiles/list";
@@ -75,5 +76,51 @@ public class AdminController {
         mobileService.saveMobile(mobile);
         publisher.publishCustomEvent("MobileController :: Add mobile done!");
         return "redirect:/admin/mobilewebshop/mobiles/list";
+    }
+
+    @GetMapping("/categories/list")
+    public String listCategories(Model model) {
+        List<MobileCategory> categories = categoryService.getAllCategories();
+        model.addAttribute("categories", categories);
+        return "categories/list";
+    }
+
+    @PostMapping("categories/search")
+    public String searchCategories(@RequestParam("query") String query, Model model) {
+        List<MobileCategory> categories = categoryService.searchCategories(query);
+        model.addAttribute("categories", categories);
+        publisher.publishCustomEvent("MobileController :: Search categories done!");
+        return "categories/list";
+    }
+
+    @GetMapping("/categories/add")
+    public String addCategoryForm(Model model) {
+        model.addAttribute("category", new MobileCategory());
+        return "categories/add";
+    }
+
+    @PostMapping("/categories/add")
+    public String saveCategory(@ModelAttribute MobileCategory category) {
+        categoryService.saveCategory(category);
+        return "redirect:/admin/mobilewebshop/categories/list";
+    }
+
+    @GetMapping("categories/edit/{id}")
+    public String editCategoryForm(@PathVariable Long id, Model model) {
+        MobileCategory category = categoryService.getCategoryById(id).orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + id));
+        model.addAttribute("category", category);
+        return "categories/edit";
+    }
+
+    @PostMapping("categories/edit/{id}")
+    public String updateCategory(@PathVariable Long id, @ModelAttribute MobileCategory category) {
+        categoryService.updateCategory(id, category);
+        return "redirect:/admin/mobilewebshop/categories/list";
+    }
+
+    @PostMapping("categories/delete/{id}")
+    public String deleteCategory(@PathVariable Long id) {
+        categoryService.deleteCategory(id);
+        return "redirect:/admin/mobilewebshop/categories/list";
     }
 }

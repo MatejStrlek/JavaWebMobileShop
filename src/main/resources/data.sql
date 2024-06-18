@@ -16,6 +16,7 @@ INSERT INTO mobile_categories (name) VALUES ('Tablets');
 INSERT INTO mobile_categories (name) VALUES ('Feature Phones');
 INSERT INTO mobile_categories (name) VALUES ('Gaming Phones');
 INSERT INTO mobile_categories (name) VALUES ('Foldable Phones');
+INSERT INTO mobile_categories (name) VALUES ('Dummy Test');
 
 INSERT INTO mobiles (name, brand, price, category_id) VALUES ('iPhone 13', 'Apple', 999.99, 1);
 INSERT INTO mobiles (name, brand, price, category_id) VALUES ('Galaxy S21', 'Samsung', 799.99, 1);
