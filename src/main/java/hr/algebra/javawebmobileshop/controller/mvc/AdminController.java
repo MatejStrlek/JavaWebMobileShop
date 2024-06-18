@@ -1,5 +1,6 @@
 package hr.algebra.javawebmobileshop.controller.mvc;
 
+import hr.algebra.javawebmobileshop.exceptions.CategoryInUseException;
 import hr.algebra.javawebmobileshop.model.Mobile;
 import hr.algebra.javawebmobileshop.model.MobileCategory;
 import hr.algebra.javawebmobileshop.model.UserLog;
@@ -123,10 +124,15 @@ public class AdminController {
     }
 
     @PostMapping("categories/delete/{id}")
-    public String deleteCategory(@PathVariable Long id) {
-        categoryService.deleteCategory(id);
-        publisher.publishCustomEvent("MobileController :: Delete category done!");
-        return "redirect:/admin/mobilewebshop/categories/list";
+    public String deleteCategory(@PathVariable Long id, Model model) {
+        try {
+            categoryService.deleteCategory(id);
+            publisher.publishCustomEvent("MobileController :: Delete category done!");
+            return "redirect:/admin/mobilewebshop/categories/list";
+        } catch (CategoryInUseException e){
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
 
     @GetMapping("/userlogs")

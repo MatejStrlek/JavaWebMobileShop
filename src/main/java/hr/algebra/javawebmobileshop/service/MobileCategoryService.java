@@ -1,8 +1,10 @@
 package hr.algebra.javawebmobileshop.service;
 
+import hr.algebra.javawebmobileshop.exceptions.CategoryInUseException;
 import hr.algebra.javawebmobileshop.model.MobileCategory;
 import hr.algebra.javawebmobileshop.repo.MobileCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +33,11 @@ public class MobileCategoryService {
     }
 
     public void deleteCategory(Long id) {
-        mobileCategoryRepository.deleteById(id);
+        try {
+            mobileCategoryRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new CategoryInUseException("Category is in use and cannot be deleted");
+        }
     }
 
     public List<MobileCategory> searchCategories(String query) {
