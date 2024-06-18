@@ -2,9 +2,11 @@ package hr.algebra.javawebmobileshop.controller.mvc;
 
 import hr.algebra.javawebmobileshop.model.Mobile;
 import hr.algebra.javawebmobileshop.model.MobileCategory;
+import hr.algebra.javawebmobileshop.model.UserLog;
 import hr.algebra.javawebmobileshop.publisher.CustomSpringEventPublisher;
 import hr.algebra.javawebmobileshop.service.MobileCategoryService;
 import hr.algebra.javawebmobileshop.service.MobileService;
+import hr.algebra.javawebmobileshop.service.UserLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,16 +17,15 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/mobilewebshop")
 public class AdminController {
-    private final CustomSpringEventPublisher publisher;
-    private final MobileService mobileService;
-    private final MobileCategoryService categoryService;
-
     @Autowired
-    public AdminController(CustomSpringEventPublisher publisher, MobileService mobileService, MobileCategoryService categoryService) {
-        this.publisher = publisher;
-        this.mobileService = mobileService;
-        this.categoryService = categoryService;
-    }
+    private CustomSpringEventPublisher publisher;
+    @Autowired
+    private MobileService mobileService;
+    @Autowired
+    private MobileCategoryService categoryService;
+    @Autowired
+    private UserLogService userLogService;
+
 
     @GetMapping("/mobiles/list")
     public String listMobiles(Model model) {
@@ -82,6 +83,7 @@ public class AdminController {
     public String listCategories(Model model) {
         List<MobileCategory> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
+        publisher.publishCustomEvent("MobileController :: List categories screen displayed!");
         return "categories/list";
     }
 
@@ -102,6 +104,7 @@ public class AdminController {
     @PostMapping("/categories/add")
     public String saveCategory(@ModelAttribute MobileCategory category) {
         categoryService.saveCategory(category);
+        publisher.publishCustomEvent("MobileController :: Add category done!");
         return "redirect:/admin/mobilewebshop/categories/list";
     }
 
@@ -115,12 +118,21 @@ public class AdminController {
     @PostMapping("categories/edit/{id}")
     public String updateCategory(@PathVariable Long id, @ModelAttribute MobileCategory category) {
         categoryService.updateCategory(id, category);
+        publisher.publishCustomEvent("MobileController :: Update category done!");
         return "redirect:/admin/mobilewebshop/categories/list";
     }
 
     @PostMapping("categories/delete/{id}")
     public String deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
+        publisher.publishCustomEvent("MobileController :: Delete category done!");
         return "redirect:/admin/mobilewebshop/categories/list";
+    }
+
+    @GetMapping("/userlogs")
+    public String showUserLogs(Model model) {
+        List<UserLog> userLogs = userLogService.findAllUserLogs();
+        model.addAttribute("userLogs", userLogs);
+        return "userlogs";
     }
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Category List</title>
+    <title>User Logs</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -14,10 +14,10 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/admin/mobilewebshop/mobiles/list}">Mobiles</a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" th:href="@{/admin/mobilewebshop/categories/list}">Categories</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" th:href="@{/admin/mobilewebshop/userlogs}">User Logs</a>
                 </li>
             </ul>
@@ -29,44 +29,27 @@
         </div>
     </nav>
 
-    <h1 class="mt-4">Category List</h1>
-    <form th:action="@{/admin/mobilewebshop/categories/search}" method="post">
-        <div class="form-group">
-            <label>
-                <input type="text" name="query" class="form-control" placeholder="Search categories">
-            </label>
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
+    <h1 class="mt-4">User Logs</h1>
     <table class="table table-striped mt-4">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Actions</th>
+            <th>Username</th>
+            <th>IP Address</th>
+            <th>Timestamp</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="category : ${categories}">
-            <td th:text="${category.name}">Name</td>
-            <td>
-                <a th:href="@{/admin/mobilewebshop/categories/edit/{id}(id=${category.id})}" class="btn btn-warning">Edit</a>
-                <form th:action="@{/admin/mobilewebshop/categories/delete/{id}(id=${category.id})}" method="post"
-                      style="display:inline;" onsubmit="return confirmDelete();">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </td>
+        <tr th:each="log : ${userLogs}">
+            <td th:text="${log.username}">Username</td>
+            <td th:text="${log.ipAddress}">IP Address</td>
+            <td th:text="${log.timestamp}">Timestamp</td>
         </tr>
         </tbody>
     </table>
-    <a th:href="@{/admin/mobilewebshop/categories/add}" class="btn btn-success">Add Category</a>
+    <a th:href="@{/admin/mobilewebshop/mobiles/list}" class="btn btn-primary">Back to Mobiles</a>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    function confirmDelete() {
-        return confirm("Are you sure you want to delete this category?");
-    }
-</script>
 </body>
 </html>

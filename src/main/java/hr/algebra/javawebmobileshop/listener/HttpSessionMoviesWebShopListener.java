@@ -21,5 +21,4 @@ public class HttpSessionMoviesWebShopListener implements HttpSessionListener {
     public void sessionDestroyed(final HttpSessionEvent event) {
         System.out.println("Session destroyed");
     }
-
 }

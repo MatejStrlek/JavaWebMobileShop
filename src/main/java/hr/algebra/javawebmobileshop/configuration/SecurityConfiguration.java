@@ -28,11 +28,10 @@ public class SecurityConfiguration {
                                 "/admin/mobilewebshop/**"
                         ).hasRole("ADMIN")
                         .requestMatchers(
-                                "/rest/mobilewebshop/purchase",
-                                "/mvc/mobilewebshop/getPurchase.html",
-                                "/mvc/mobilewebshop/getHistory.html"
+                                "/user/**"
                         )
                         .hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/public/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form.defaultSuccessUrl("/admin/mobilewebshop/mobiles/list"))
