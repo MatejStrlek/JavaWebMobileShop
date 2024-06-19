@@ -28,7 +28,8 @@ public class SecurityConfiguration {
                                 "/admin/mobilewebshop/**"
                         ).hasRole("ADMIN")
                         .requestMatchers(
-                                "/user/**"
+                                "/user/**",
+                                "public/shop/cart/buy"
                         )
                         .hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/public/shop/**").permitAll()
