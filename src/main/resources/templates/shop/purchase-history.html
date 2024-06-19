@@ -21,7 +21,7 @@
                     <a class="nav-link" th:href="@{/admin/mobilewebshop/userlogs}">User Logs</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/admin/purchase-history}">Purchase History</a>
+                    <a class="nav-link" th:href="@{/admin/mobilewebshop/purchase-history}">Purchase History</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -33,7 +33,7 @@
     </nav>
 
     <h1 class="mt-4">Purchase History</h1>
-    <form th:action="@{/admin/purchase-history/filter}" method="get" class="form-inline">
+    <form th:action="@{/admin/mobilewebshop/purchase-history/filter}" method="get" class="form-inline">
         <div class="form-group mb-2">
             <label for="userId" class="sr-only">User</label>
             <select id="userId" name="userId" class="form-control">
