@@ -4,6 +4,8 @@ import hr.algebra.javawebmobileshop.model.*;
 import hr.algebra.javawebmobileshop.service.*;
 import hr.algebra.javawebmobileshop.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/public/shop")
 public class ShopController {
+    public static final String READ_ONLY = "read_only";
     private final CartService cartService;
     private final MobileCategoryService categoryService;
     private final MobileService mobileService;
