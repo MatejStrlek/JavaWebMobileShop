@@ -1,15 +1,12 @@
 package hr.algebra.javawebmobileshop.controller.mvc;
 
 import hr.algebra.javawebmobileshop.model.*;
-import hr.algebra.javawebmobileshop.service.MobileCategoryService;
-import hr.algebra.javawebmobileshop.service.MobileService;
-import hr.algebra.javawebmobileshop.service.PurchaseService;
+import hr.algebra.javawebmobileshop.service.*;
 import hr.algebra.javawebmobileshop.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import hr.algebra.javawebmobileshop.service.CartService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -25,14 +22,16 @@ public class ShopController {
     private final MobileCategoryService categoryService;
     private final MobileService mobileService;
     private final PurchaseService purchaseService;
+    private final MyUserDetailsService userDetailsService;
 
     @Autowired
     public ShopController(CartService cartService, MobileCategoryService categoryService,
-                          MobileService mobileService, PurchaseService purchaseService) {
+                          MobileService mobileService, PurchaseService purchaseService, MyUserDetailsService userDetailsService) {
         this.cartService = cartService;
         this.categoryService = categoryService;
         this.mobileService = mobileService;
         this.purchaseService = purchaseService;
+        this.userDetailsService = userDetailsService;
     }
 
     @GetMapping
@@ -102,6 +101,9 @@ public class ShopController {
         Purchase purchase = new Purchase();
         purchase.setPurchaseDate(DateUtils.format(LocalDateTime.now()));
         purchase.setPaymentMethod(paymentMethod);
+
+        User currentUser = userDetailsService.getCurrentUser();
+        purchase.setUser(currentUser);
 
         List<PurchaseItem> purchaseItems = cartItems.stream()
                 .map(item -> new PurchaseItem(

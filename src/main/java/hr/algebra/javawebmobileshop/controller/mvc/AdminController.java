@@ -1,20 +1,15 @@
 package hr.algebra.javawebmobileshop.controller.mvc;
 
 import hr.algebra.javawebmobileshop.exceptions.CategoryInUseException;
-import hr.algebra.javawebmobileshop.model.Mobile;
-import hr.algebra.javawebmobileshop.model.MobileCategory;
-import hr.algebra.javawebmobileshop.model.Purchase;
-import hr.algebra.javawebmobileshop.model.UserLog;
+import hr.algebra.javawebmobileshop.model.*;
 import hr.algebra.javawebmobileshop.publisher.CustomSpringEventPublisher;
-import hr.algebra.javawebmobileshop.service.MobileCategoryService;
-import hr.algebra.javawebmobileshop.service.MobileService;
-import hr.algebra.javawebmobileshop.service.PurchaseService;
-import hr.algebra.javawebmobileshop.service.UserLogService;
+import hr.algebra.javawebmobileshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -30,6 +25,8 @@ public class AdminController {
     private UserLogService userLogService;
     @Autowired
     private PurchaseService purchaseService;
+    @Autowired
+    private MyUserDetailsService userDetailsService;
 
 
     @GetMapping("/mobiles/list")
@@ -147,9 +144,24 @@ public class AdminController {
     }
 
     @GetMapping("/purchase-history")
-    public String viewPurchaseHistory(Model model) {
+    public String getPurchaseHistory(Model model) {
         List<Purchase> purchases = purchaseService.getAllPurchases();
+        List<User> users = userDetailsService.getAllUsers();
         model.addAttribute("purchases", purchases);
+        model.addAttribute("users", users);
+        return "shop/purchase-history";
+    }
+
+    @GetMapping("/purchase-history/filter")
+    public String filterPurchaseHistory(@RequestParam(required = false) Long userId,
+                                        @RequestParam(required = false) String date,
+                                        @RequestParam(required = false) String paymentMethod,
+                                        Model model) {
+        LocalDate localDate = date != null && !date.isEmpty() ? LocalDate.parse(date) : null;
+        List<Purchase> purchases = purchaseService.filterPurchases(userId, localDate, localDate, paymentMethod);
+        List<User> users = userDetailsService.getAllUsers();
+        model.addAttribute("purchases", purchases);
+        model.addAttribute("users", users);
         return "shop/purchase-history";
     }
 }

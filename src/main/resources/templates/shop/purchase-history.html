@@ -20,8 +20,8 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/admin/mobilewebshop/userlogs}">User Logs</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/admin/mobilewebshop/purchase-history}">Purchase History</a>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/admin/purchase-history}">Purchase History</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -31,10 +31,35 @@
             </ul>
         </div>
     </nav>
+
     <h1 class="mt-4">Purchase History</h1>
-    <table class="table table-striped">
+    <form th:action="@{/admin/purchase-history/filter}" method="get" class="form-inline">
+        <div class="form-group mb-2">
+            <label for="userId" class="sr-only">User</label>
+            <select id="userId" name="userId" class="form-control">
+                <option value="" disabled selected>Select User</option>
+                <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+            </select>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="date" class="sr-only">Date</label>
+            <input type="date" id="date" name="date" class="form-control">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="paymentMethod" class="sr-only">Payment Method</label>
+            <select id="paymentMethod" name="paymentMethod" class="form-control">
+                <option value="" disabled selected>Select Payment Method</option>
+                <option value="Cash">Cash</option>
+                <option value="PayPal">PayPal</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Filter</button>
+    </form>
+
+    <table class="table table-striped mt-4">
         <thead>
         <tr>
+            <th>User</th>
             <th>Purchase Date</th>
             <th>Payment Method</th>
             <th>Items</th>
@@ -42,12 +67,13 @@
         </thead>
         <tbody>
         <tr th:each="purchase : ${purchases}">
-            <td th:text="${purchase.purchaseDate}">2024-06-19T10:15:30</td>
-            <td th:text="${purchase.paymentMethod}">Cash</td>
+            <td th:text="${purchase.user != null ? purchase.user.username : 'N/A'}">User</td>
+            <td th:text="${purchase.purchaseDate}">Purchase Date</td>
+            <td th:text="${purchase.paymentMethod}">Payment Method</td>
             <td>
                 <ul>
                     <li th:each="item : ${purchase.purchaseItems}">
-                        <span th:text="${item.mobileName} + ' - ' + ${item.quantity} + ' @ ' + ${item.price}"></span>
+                        <span th:text="${item.mobileName}">Item Name</span> - <span th:text="${item.quantity}">Quantity</span>
                     </li>
                 </ul>
             </td>
