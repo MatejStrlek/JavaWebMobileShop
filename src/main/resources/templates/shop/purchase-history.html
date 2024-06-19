@@ -8,17 +8,20 @@
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Mobile Webshop</a>
+        <a class="navbar-brand" th:href="@{/public/shop}">Mobile Webshop</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/public/shop}">Shop</a>
+                    <a class="nav-link" th:href="@{/admin/mobilewebshop/mobiles/list}">Mobiles</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/public/shop/cart}">Cart</a>
+                    <a class="nav-link" th:href="@{/admin/mobilewebshop/categories/list}">Categories</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/public/shop/purchase-history}">Purchase History</a>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/mobilewebshop/userlogs}">User Logs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/admin/mobilewebshop/purchase-history}">Purchase History</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -28,7 +31,6 @@
             </ul>
         </div>
     </nav>
-
     <h1 class="mt-4">Purchase History</h1>
     <table class="table table-striped">
         <thead>

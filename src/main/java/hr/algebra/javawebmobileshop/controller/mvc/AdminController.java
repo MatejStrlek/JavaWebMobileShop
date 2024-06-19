@@ -3,10 +3,12 @@ package hr.algebra.javawebmobileshop.controller.mvc;
 import hr.algebra.javawebmobileshop.exceptions.CategoryInUseException;
 import hr.algebra.javawebmobileshop.model.Mobile;
 import hr.algebra.javawebmobileshop.model.MobileCategory;
+import hr.algebra.javawebmobileshop.model.Purchase;
 import hr.algebra.javawebmobileshop.model.UserLog;
 import hr.algebra.javawebmobileshop.publisher.CustomSpringEventPublisher;
 import hr.algebra.javawebmobileshop.service.MobileCategoryService;
 import hr.algebra.javawebmobileshop.service.MobileService;
+import hr.algebra.javawebmobileshop.service.PurchaseService;
 import hr.algebra.javawebmobileshop.service.UserLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ public class AdminController {
     private MobileCategoryService categoryService;
     @Autowired
     private UserLogService userLogService;
+    @Autowired
+    private PurchaseService purchaseService;
 
 
     @GetMapping("/mobiles/list")
@@ -140,5 +144,12 @@ public class AdminController {
         List<UserLog> userLogs = userLogService.findAllUserLogs();
         model.addAttribute("userLogs", userLogs);
         return "userlogs";
+    }
+
+    @GetMapping("/purchase-history")
+    public String viewPurchaseHistory(Model model) {
+        List<Purchase> purchases = purchaseService.getAllPurchases();
+        model.addAttribute("purchases", purchases);
+        return "shop/purchase-history";
     }
 }

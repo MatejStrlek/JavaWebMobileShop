@@ -117,14 +117,7 @@ public class ShopController {
         purchaseService.savePurchase(purchase);
         cartService.clearCart();
 
-        return "redirect:/public/shop/purchase-history";
-    }
-
-    @GetMapping("/purchase-history")
-    public String viewPurchaseHistory(Model model) {
-        List<Purchase> purchases = purchaseService.getAllPurchases();
-        model.addAttribute("purchases", purchases);
-        return "shop/purchase-history";
+        return "redirect:/public/shop";
     }
 }
 
