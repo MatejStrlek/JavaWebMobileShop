@@ -32,6 +32,11 @@
     </nav>
 
     <h1 class="mt-4">Shopping Cart</h1>
+
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
     <form th:action="@{/public/shop/cart/clear}" method="post">
         <button type="submit" class="btn btn-danger mb-4">Clear Cart</button>
     </form>
@@ -75,8 +80,14 @@
     </table>
     <a th:href="@{/public/shop}" class="btn btn-secondary mt-4">Continue Shopping</a>
     <div class="mt-4">
-        <button class="btn btn-success">Buy with Cash</button>
-        <button class="btn btn-primary">Buy with PayPal</button>
+        <form th:action="@{/public/shop/cart/buy}" method="post" style="display: inline;">
+            <input type="hidden" name="paymentMethod" value="Cash">
+            <button type="submit" class="btn btn-success">Buy with Cash</button>
+        </form>
+        <form th:action="@{/public/shop/cart/buy}" method="post" style="display: inline;">
+            <input type="hidden" name="paymentMethod" value="PayPal">
+            <button type="submit" class="btn btn-primary">Buy with PayPal</button>
+        </form>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

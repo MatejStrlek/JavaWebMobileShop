@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Purchase History</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Mobile Webshop</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/public/shop}">Shop</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/public/shop/cart}">Cart</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/public/shop/purchase-history}">Purchase History</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn btn-danger text-white" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1 class="mt-4">Purchase History</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Purchase Date</th>
+            <th>Payment Method</th>
+            <th>Items</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="purchase : ${purchases}">
+            <td th:text="${purchase.purchaseDate}">2024-06-19T10:15:30</td>
+            <td th:text="${purchase.paymentMethod}">Cash</td>
+            <td>
+                <ul>
+                    <li th:each="item : ${purchase.purchaseItems}">
+                        <span th:text="${item.mobileName} + ' - ' + ${item.quantity} + ' @ ' + ${item.price}"></span>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

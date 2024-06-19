@@ -1,10 +1,10 @@
 package hr.algebra.javawebmobileshop.controller.mvc;
 
-import hr.algebra.javawebmobileshop.model.CartItem;
-import hr.algebra.javawebmobileshop.model.Mobile;
-import hr.algebra.javawebmobileshop.model.MobileCategory;
+import hr.algebra.javawebmobileshop.model.*;
 import hr.algebra.javawebmobileshop.service.MobileCategoryService;
 import hr.algebra.javawebmobileshop.service.MobileService;
+import hr.algebra.javawebmobileshop.service.PurchaseService;
+import hr.algebra.javawebmobileshop.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,9 @@ import hr.algebra.javawebmobileshop.service.CartService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -22,12 +24,15 @@ public class ShopController {
     private final CartService cartService;
     private final MobileCategoryService categoryService;
     private final MobileService mobileService;
+    private final PurchaseService purchaseService;
 
     @Autowired
-    public ShopController(CartService cartService, MobileCategoryService categoryService, MobileService mobileService) {
+    public ShopController(CartService cartService, MobileCategoryService categoryService,
+                          MobileService mobileService, PurchaseService purchaseService) {
         this.cartService = cartService;
         this.categoryService = categoryService;
         this.mobileService = mobileService;
+        this.purchaseService = purchaseService;
     }
 
     @GetMapping
@@ -83,6 +88,43 @@ public class ShopController {
     public String clearCart() {
         cartService.clearCart();
         return "redirect:/public/shop/cart";
+    }
+
+    @PostMapping("/cart/buy")
+    public String buyCart(@RequestParam("paymentMethod") String paymentMethod, Model model) {
+        List<CartItem> cartItems = cartService.getCartItems();
+
+        if (cartItems.isEmpty()) {
+            model.addAttribute("errorMessage", "Your cart is empty. Please add items to your cart before proceeding to checkout.");
+            return "cart/view";
+        }
+
+        Purchase purchase = new Purchase();
+        purchase.setPurchaseDate(DateUtils.format(LocalDateTime.now()));
+        purchase.setPaymentMethod(paymentMethod);
+
+        List<PurchaseItem> purchaseItems = cartItems.stream()
+                .map(item -> new PurchaseItem(
+                        null,
+                        item.getMobile().getName(),
+                        item.getMobile().getBrand(),
+                        item.getMobile().getPrice(),
+                        item.getQuantity(),
+                        purchase))
+                .collect(Collectors.toList());
+
+        purchase.setPurchaseItems(purchaseItems);
+        purchaseService.savePurchase(purchase);
+        cartService.clearCart();
+
+        return "redirect:/public/shop/purchase-history";
+    }
+
+    @GetMapping("/purchase-history")
+    public String viewPurchaseHistory(Model model) {
+        List<Purchase> purchases = purchaseService.getAllPurchases();
+        model.addAttribute("purchases", purchases);
+        return "shop/purchase-history";
     }
 }
 
