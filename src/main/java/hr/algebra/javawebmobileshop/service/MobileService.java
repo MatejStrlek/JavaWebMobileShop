@@ -43,4 +43,8 @@ public class MobileService {
                         String.valueOf(mobile.getPrice()).contains(query))
                 .toList();
     }
+
+    public List<Mobile> getMobilesByCategoryId(Long categoryId) {
+        return mobileRepository.findByCategoryId(categoryId);
+    }
 }

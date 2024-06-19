@@ -31,10 +31,10 @@ public class SecurityConfiguration {
                                 "/user/**"
                         )
                         .hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/public/shop/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form.defaultSuccessUrl("/admin/mobilewebshop/mobiles/list"))
+                .formLogin(form -> form.defaultSuccessUrl("/public/shop"))
                 .logout(LogoutConfigurer::permitAll);
         return http.build();
     }
