@@ -25,4 +25,10 @@ public class Purchase {
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
     private List<PurchaseItem> purchaseItems;
+
+    public Double getTotalAmount() {
+        return purchaseItems.stream()
+                .mapToDouble(item -> item.getQuantity() * item.getPrice())
+                .sum();
+    }
 }

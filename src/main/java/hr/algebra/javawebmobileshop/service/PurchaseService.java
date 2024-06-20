@@ -1,6 +1,7 @@
 package hr.algebra.javawebmobileshop.service;
 
 import hr.algebra.javawebmobileshop.model.Purchase;
+import hr.algebra.javawebmobileshop.model.User;
 import hr.algebra.javawebmobileshop.repo.PurchaseRepository;
 import hr.algebra.javawebmobileshop.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,12 @@ public class PurchaseService {
         return purchaseRepository.findAll();
     }
 
-    public List<Purchase> getPurchasesByUser(Long userId) {
+    public List<Purchase> getPurchasesByUserId(Long userId) {
         return purchaseRepository.findByUserId(userId);
+    }
+
+    public List<Purchase> getPurchasesByUser(User user) {
+        return purchaseRepository.findByUser(user);
     }
 
     public List<Purchase> getPurchasesByDateRange(LocalDate startDate, LocalDate endDate) {
@@ -55,7 +60,7 @@ public class PurchaseService {
                             DateUtils.format(endDateTime),
                             paymentMethod);
         } else if (userId != null) {
-            return getPurchasesByUser(userId);
+            return getPurchasesByUserId(userId);
         } else if (startDateTime != null && endDateTime != null) {
             return getPurchasesByDateRange(startDate, endDate);
         } else if (paymentMethod != null) {

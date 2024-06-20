@@ -62,6 +62,7 @@
             <th>User</th>
             <th>Purchase Date</th>
             <th>Payment Method</th>
+            <th>Total Amount</th>
             <th>Items</th>
         </tr>
         </thead>
@@ -70,10 +71,11 @@
             <td th:text="${purchase.user != null ? purchase.user.username : 'N/A'}">User</td>
             <td th:text="${purchase.purchaseDate}">Purchase Date</td>
             <td th:text="${purchase.paymentMethod}">Payment Method</td>
+            <td th:text="${purchase.getTotalAmount()}">Total Amount</td>
             <td>
                 <ul>
                     <li th:each="item : ${purchase.purchaseItems}">
-                        <span th:text="${item.mobileName}">Item Name</span> - <span th:text="${item.quantity}">Quantity</span>
+                        <span th:text="${item.mobileName + ' (x' + item.quantity + ')'}">Quantity</span>
                     </li>
                 </ul>
             </td>
