@@ -52,4 +52,10 @@ public class CartService {
     public void clearCart() {
         cartItemRepository.deleteAll();
     }
+
+    public Double calculateTotal(List<CartItem> cartItems) {
+        return cartItems.stream()
+                .mapToDouble(item -> item.getMobile().getPrice() * item.getQuantity())
+                .sum();
+    }
 }

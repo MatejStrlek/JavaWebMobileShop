@@ -114,13 +114,13 @@ public class ShopController {
                         item.getMobile().getPrice(),
                         item.getQuantity(),
                         purchase))
-                .collect(Collectors.toList());
+                .toList();
 
         purchase.setPurchaseItems(purchaseItems);
         purchaseService.savePurchase(purchase);
         cartService.clearCart();
 
-        return "redirect:/public/shop";
+        return "/shop/purchase-complete";
     }
 
     @GetMapping("/user/purchase-history")
@@ -129,6 +129,11 @@ public class ShopController {
         List<Purchase> purchases = purchaseService.getPurchasesByUser(currentUser);
         model.addAttribute("purchases", purchases);
         return "user/purchase-history";
+    }
+
+    @GetMapping("/response")
+    public String response(){
+        return "shop/purchase-complete";
     }
 }
 

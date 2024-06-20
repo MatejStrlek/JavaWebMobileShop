@@ -92,7 +92,7 @@
             <input type="hidden" name="paymentMethod" value="Cash">
             <button type="submit" class="btn btn-success">Buy with Cash</button>
         </form>
-        <form th:action="@{/public/shop/cart/buy}" method="post" style="display: inline;"
+        <form th:action="@{/public/shop/paypal/buy}" method="post" style="display: inline;"
               onsubmit="return confirmBuy('PayPal');">
             <input type="hidden" name="paymentMethod" value="PayPal">
             <button type="submit" class="btn btn-primary">Buy with PayPal</button>
