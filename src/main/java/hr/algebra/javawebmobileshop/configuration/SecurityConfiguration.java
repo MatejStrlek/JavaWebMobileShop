@@ -28,7 +28,8 @@ public class SecurityConfiguration {
                         ).hasRole("ADMIN")
                         .requestMatchers(
                                 "public/shop/user/**",
-                                "public/shop/cart/buy"
+                                "public/shop/cart/buy",
+                                "public/shop/paypal/**"
                         )
                         .hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/public/shop/**").permitAll()
