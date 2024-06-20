@@ -37,12 +37,12 @@ public class AdminController {
         return "mobiles/list";
     }
 
-    @PostMapping("/mobiles/search")
-    public String searchMobiles(@RequestParam("query") String query, Model model) {
+    @GetMapping("/mobiles/search")
+    @ResponseBody
+    public List<Mobile> searchMobilesAsync(@RequestParam("query") String query) {
         List<Mobile> mobiles = mobileService.searchMobiles(query);
-        model.addAttribute("mobiles", mobiles);
-        publisher.publishCustomEvent("MobileController :: Search mobiles done!");
-        return "mobiles/list";
+        publisher.publishCustomEvent("MobileController :: Async search mobiles done!");
+        return mobiles;
     }
 
     @GetMapping("/mobiles/edit/{id}")
@@ -89,12 +89,12 @@ public class AdminController {
         return "categories/list";
     }
 
-    @PostMapping("categories/search")
-    public String searchCategories(@RequestParam("query") String query, Model model) {
+    @GetMapping("/categories/search")
+    @ResponseBody
+    public List<MobileCategory> searchCategories(@RequestParam("query") String query) {
         List<MobileCategory> categories = categoryService.searchCategories(query);
-        model.addAttribute("categories", categories);
-        publisher.publishCustomEvent("MobileController :: Search categories done!");
-        return "categories/list";
+        publisher.publishCustomEvent("MobileController :: Async search categories done!");
+        return categories;
     }
 
     @GetMapping("/categories/add")

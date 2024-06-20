@@ -97,7 +97,8 @@ public class ShopController {
         List<CartItem> cartItems = cartService.getCartItems();
 
         if (cartItems.isEmpty()) {
-            model.addAttribute("errorMessage", "Your cart is empty. Please add items to your cart before proceeding to checkout.");
+            model.addAttribute("errorMessage",
+                    "Your cart is empty. Please add items to your cart before proceeding to checkout.");
             return "cart/view";
         }
 

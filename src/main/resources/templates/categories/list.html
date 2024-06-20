@@ -33,13 +33,12 @@
     </nav>
 
     <h1 class="mt-4">Category List</h1>
-    <form th:action="@{/admin/mobilewebshop/categories/search}" method="post">
+    <form onsubmit="return false;">
         <div class="form-group">
             <label>
-                <input type="text" name="query" class="form-control" placeholder="Search categories">
+                <input type="text" name="query" id="searchQuery" class="form-control" placeholder="Search categories" onkeyup="searchCategories()">
             </label>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
     <table class="table table-striped mt-4">
         <thead>
@@ -48,7 +47,7 @@
             <th>Actions</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="categoryTableBody">
         <tr th:each="category : ${categories}">
             <td th:text="${category.name}">Name</td>
             <td>
@@ -63,12 +62,37 @@
     </table>
     <a th:href="@{/admin/mobilewebshop/categories/add}" class="btn btn-success">Add Category</a>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     function confirmDelete() {
         return confirm("Are you sure you want to delete this category?");
+    }
+
+    function searchCategories() {
+        let query = document.getElementById("searchQuery").value;
+        $.ajax({
+            type: "GET",
+            url: "/admin/mobilewebshop/categories/search",
+            data: { query: query },
+            success: function(response) {
+                let tableBody = document.getElementById("categoryTableBody");
+                tableBody.innerHTML = "";
+                response.forEach(function(category) {
+                    let row = `<tr>
+                        <td>${category.name}</td>
+                        <td>
+                            <a href="/admin/mobilewebshop/categories/edit/${category.id}" class="btn btn-warning">Edit</a>
+                            <form action="/admin/mobilewebshop/categories/delete/${category.id}" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            }
+        });
     }
 </script>
 </body>
