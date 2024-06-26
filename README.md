@@ -1,4 +1,4 @@
-# Introduction
+# Java Web Mobile Shop
 This is a Spring MVC-based internet shopping application that supports two user roles: users (shoppers) and administrators. Users can browse products, add items to their cart, and make purchases, while administrators manage product listings and view purchase histories.
 
 # Features
@@ -24,7 +24,7 @@ This is a Spring MVC-based internet shopping application that supports two user 
 
 # Technologies Used
 - Spring MVC
-- Thymeleaf (or equivalent template engine: JSP+JSTL, FreeMarker, Mustache)
+- Thymeleaf
 - Spring Security
 - Bootstrap (for visual design)
 - PayPal API (for payment processing)
